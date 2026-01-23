@@ -12,7 +12,12 @@ const HUBSPOT_CONFIG = {
 
 const HUBSPOT_ENDPOINT = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_CONFIG.portalId}/${HUBSPOT_CONFIG.formGuid}`;
 
+// Debug logging
+console.log('[Ridgeline] Script loaded');
+console.log('[Ridgeline] HubSpot endpoint:', HUBSPOT_ENDPOINT);
+
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('[Ridgeline] DOM loaded, initializing...');
 
   // =====================================================
   // MOBILE MENU TOGGLE
@@ -23,19 +28,16 @@ document.addEventListener('DOMContentLoaded', function() {
   if (mobileMenuBtn && navMenu) {
     mobileMenuBtn.addEventListener('click', function() {
       navMenu.classList.toggle('active');
-      // Update aria-expanded for accessibility
       const isExpanded = navMenu.classList.contains('active');
       mobileMenuBtn.setAttribute('aria-expanded', isExpanded);
 
-      // Change menu icon
       if (isExpanded) {
-        mobileMenuBtn.innerHTML = '&#10005;'; // X icon
+        mobileMenuBtn.innerHTML = '&#10005;';
       } else {
-        mobileMenuBtn.innerHTML = '&#9776;'; // Hamburger icon
+        mobileMenuBtn.innerHTML = '&#9776;';
       }
     });
 
-    // Close menu when clicking on a link
     const navLinks = navMenu.querySelectorAll('a');
     navLinks.forEach(function(link) {
       link.addEventListener('click', function() {
@@ -44,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // Close menu when clicking outside
     document.addEventListener('click', function(event) {
       if (!navMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
         navMenu.classList.remove('active');
@@ -62,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
     link.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
 
-      // Skip if it's just "#" or empty
       if (href === '#' || href === '') {
         return;
       }
@@ -72,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (target) {
         e.preventDefault();
 
-        // Calculate offset for sticky header
         const headerHeight = document.querySelector('.header').offsetHeight;
         const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
 
@@ -88,10 +87,18 @@ document.addEventListener('DOMContentLoaded', function() {
   // FORM VALIDATION AND HUBSPOT SUBMISSION
   // =====================================================
   const forms = document.querySelectorAll('form');
+  console.log('[Ridgeline] Found ' + forms.length + ' forms on page');
 
-  forms.forEach(function(form) {
-    form.addEventListener('submit', async function(e) {
+  forms.forEach(function(form, index) {
+    console.log('[Ridgeline] Attaching submit handler to form #' + index, form.id || 'no-id');
+
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
+      e.stopPropagation();
+
+      console.log('[Ridgeline] ========== FORM SUBMIT DETECTED ==========');
+      console.log('[Ridgeline] Form ID:', form.id || 'no-id');
+      console.log('[Ridgeline] Form action:', form.action);
 
       // Get all required fields
       const requiredFields = form.querySelectorAll('[required]');
@@ -105,10 +112,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Validate each required field
       requiredFields.forEach(function(field) {
-        // Remove existing error styling
         field.classList.remove('field-error');
 
-        // Check if field is empty
         if (!field.value.trim()) {
           isValid = false;
           field.classList.add('field-error');
@@ -117,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
           return;
         }
 
-        // Validate email
         if (field.type === 'email' && field.value) {
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           if (!emailRegex.test(field.value)) {
@@ -128,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         }
 
-        // Validate phone
         if (field.type === 'tel' && field.value) {
           const phoneRegex = /^[\d\s\-\(\)]+$/;
           const digitsOnly = field.value.replace(/\D/g, '');
@@ -140,7 +143,6 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         }
 
-        // Validate zip code
         if (field.name === 'zip' && field.value) {
           const zipRegex = /^\d{5}$/;
           if (!zipRegex.test(field.value)) {
@@ -152,11 +154,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
 
-      // If form is valid, submit to HubSpot
+      console.log('[Ridgeline] Form validation result:', isValid ? 'VALID' : 'INVALID');
+
       if (isValid) {
-        await submitToHubSpot(form);
+        console.log('[Ridgeline] Starting HubSpot submission...');
+        submitToHubSpot(form);
       } else {
-        // Focus on first invalid field
+        console.log('[Ridgeline] Form invalid, not submitting');
         if (firstInvalidField) {
           firstInvalidField.focus();
         }
@@ -170,7 +174,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       field.addEventListener('input', function() {
-        // Remove error styling on input
         if (field.classList.contains('field-error')) {
           field.classList.remove('field-error');
           const errorMsg = field.parentElement.querySelector('.error-message');
@@ -183,54 +186,69 @@ document.addEventListener('DOMContentLoaded', function() {
   // =====================================================
   // HUBSPOT FORM SUBMISSION
   // =====================================================
-  async function submitToHubSpot(form) {
+  function submitToHubSpot(form) {
+    console.log('[Ridgeline] submitToHubSpot() called');
+
     const submitBtn = form.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn.innerHTML;
+    const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
 
     // Show loading state
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = 'Submitting...';
-    submitBtn.style.opacity = '0.7';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Submitting...';
+      submitBtn.style.opacity = '0.7';
+    }
 
-    try {
-      // Collect form data
-      const formData = collectFormData(form);
+    // Collect form data
+    const formData = collectFormData(form);
+    console.log('[Ridgeline] Collected form data:', formData);
 
-      // Build HubSpot fields array
-      const hubspotFields = buildHubSpotFields(formData);
+    // Build HubSpot fields array
+    const hubspotFields = buildHubSpotFields(formData);
+    console.log('[Ridgeline] HubSpot fields:', hubspotFields);
 
-      // Prepare the submission payload
-      const payload = {
-        fields: hubspotFields,
-        context: {
-          pageUri: window.location.href,
-          pageName: document.title
-        }
-      };
+    // Prepare the submission payload
+    const payload = {
+      fields: hubspotFields,
+      context: {
+        pageUri: window.location.href,
+        pageName: document.title
+      }
+    };
 
-      // Submit to HubSpot
-      const response = await fetch(HUBSPOT_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+    console.log('[Ridgeline] Full payload:', JSON.stringify(payload, null, 2));
+    console.log('[Ridgeline] Sending to:', HUBSPOT_ENDPOINT);
+
+    // Submit to HubSpot using fetch
+    fetch(HUBSPOT_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(function(response) {
+      console.log('[Ridgeline] HubSpot response status:', response.status);
+      console.log('[Ridgeline] HubSpot response ok:', response.ok);
 
       if (response.ok) {
-        // Success - show success message
-        showFormSuccess(form);
+        return response.json().then(function(data) {
+          console.log('[Ridgeline] HubSpot SUCCESS response:', data);
+          showFormSuccess(form);
+        });
       } else {
-        // API error
-        const errorData = await response.json().catch(() => ({}));
-        console.error('HubSpot API Error:', errorData);
-        showFormError(form, submitBtn, originalBtnText);
+        return response.text().then(function(text) {
+          console.error('[Ridgeline] HubSpot ERROR response:', text);
+          showFormError(form, submitBtn, originalBtnText);
+        });
       }
-    } catch (error) {
-      // Network or other error
-      console.error('Form submission error:', error);
+    })
+    .catch(function(error) {
+      console.error('[Ridgeline] Fetch error:', error);
+      console.error('[Ridgeline] Error name:', error.name);
+      console.error('[Ridgeline] Error message:', error.message);
       showFormError(form, submitBtn, originalBtnText);
-    }
+    });
   }
 
   // =====================================================
@@ -258,35 +276,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Map form fields to HubSpot properties
     const fieldMappings = {
-      // Name fields - try different common names
       'name': 'firstname',
       'contact-name': 'firstname',
       'sidebar-name': 'firstname',
       'firstname': 'firstname',
       'first_name': 'firstname',
-
-      // Phone fields
       'phone': 'phone',
       'contact-phone': 'phone',
       'sidebar-phone': 'phone',
       'telephone': 'phone',
-
-      // Email fields
       'email': 'email',
       'contact-email': 'email',
       'sidebar-email': 'email',
-
-      // Address fields
       'address': 'address',
       'contact-address': 'address',
       'sidebar-address': 'address',
-
-      // Zip code
       'zip': 'zip',
       'zipcode': 'zip',
       'postal_code': 'zip',
-
-      // Message/pest problem fields
       'message': 'message',
       'contact-message': 'message',
       'sidebar-message': 'message',
@@ -296,8 +303,6 @@ document.addEventListener('DOMContentLoaded', function() {
       'pest_issues': 'message',
       'location': 'message',
       'sidebar-location': 'message',
-
-      // Additional fields
       'company': 'company',
       'sidebar-company': 'company',
       'business_type': 'message',
@@ -312,53 +317,53 @@ document.addEventListener('DOMContentLoaded', function() {
       'sidebar-rodent-type': 'message'
     };
 
-    // Track which HubSpot fields we've already added
     const addedFields = {};
 
-    // Process each form field
-    for (const [formField, value] of Object.entries(formData)) {
-      const hubspotField = fieldMappings[formField];
+    for (const formField in formData) {
+      if (formData.hasOwnProperty(formField)) {
+        const value = formData[formField];
+        const hubspotField = fieldMappings[formField];
 
-      if (hubspotField) {
-        // For message field, concatenate multiple values
-        if (hubspotField === 'message') {
-          if (addedFields['message']) {
-            // Append to existing message
-            const existingField = fields.find(f => f.name === 'message');
-            if (existingField) {
-              existingField.value += ' | ' + value;
+        if (hubspotField) {
+          if (hubspotField === 'message') {
+            if (addedFields['message']) {
+              for (var i = 0; i < fields.length; i++) {
+                if (fields[i].name === 'message') {
+                  fields[i].value += ' | ' + value;
+                  break;
+                }
+              }
+            } else {
+              fields.push({
+                objectTypeId: '0-1',
+                name: 'message',
+                value: value
+              });
+              addedFields['message'] = true;
             }
-          } else {
-            fields.push({
-              objectTypeId: '0-1',
-              name: 'message',
-              value: value
-            });
-            addedFields['message'] = true;
-          }
-        } else if (!addedFields[hubspotField]) {
-          // For name field, handle splitting if it contains full name
-          if (hubspotField === 'firstname' && value.includes(' ')) {
-            const nameParts = value.split(' ');
-            fields.push({
-              objectTypeId: '0-1',
-              name: 'firstname',
-              value: nameParts[0]
-            });
-            fields.push({
-              objectTypeId: '0-1',
-              name: 'lastname',
-              value: nameParts.slice(1).join(' ')
-            });
-            addedFields['firstname'] = true;
-            addedFields['lastname'] = true;
-          } else {
-            fields.push({
-              objectTypeId: '0-1',
-              name: hubspotField,
-              value: value
-            });
-            addedFields[hubspotField] = true;
+          } else if (!addedFields[hubspotField]) {
+            if (hubspotField === 'firstname' && value.indexOf(' ') !== -1) {
+              const nameParts = value.split(' ');
+              fields.push({
+                objectTypeId: '0-1',
+                name: 'firstname',
+                value: nameParts[0]
+              });
+              fields.push({
+                objectTypeId: '0-1',
+                name: 'lastname',
+                value: nameParts.slice(1).join(' ')
+              });
+              addedFields['firstname'] = true;
+              addedFields['lastname'] = true;
+            } else {
+              fields.push({
+                objectTypeId: '0-1',
+                name: hubspotField,
+                value: value
+              });
+              addedFields[hubspotField] = true;
+            }
           }
         }
       }
@@ -371,22 +376,20 @@ document.addEventListener('DOMContentLoaded', function() {
   // SHOW FORM SUCCESS MESSAGE
   // =====================================================
   function showFormSuccess(form) {
-    // Create success message
-    const successHTML = `
-      <div class="form-success" style="text-align: center; padding: 2rem 1rem;">
-        <div style="font-size: 3rem; margin-bottom: 1rem; color: #3E5A6D;">&#10004;</div>
-        <h3 style="margin-bottom: 0.5rem; color: #3E5A6D;">Thank You!</h3>
-        <p style="margin-bottom: 1rem; color: #333;">We'll contact you within 30 minutes.</p>
-        <p style="margin-bottom: 1.5rem; color: #666;">For immediate service, call us directly:</p>
-        <a href="tel:+14353759148" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
-          <span>&#128222;</span> (435) 375-9148
-        </a>
-      </div>
-    `;
+    console.log('[Ridgeline] Showing success message');
+
+    const successHTML =
+      '<div class="form-success" style="text-align: center; padding: 2rem 1rem;">' +
+        '<div style="font-size: 3rem; margin-bottom: 1rem; color: #3E5A6D;">&#10004;</div>' +
+        '<h3 style="margin-bottom: 0.5rem; color: #3E5A6D;">Thank You!</h3>' +
+        '<p style="margin-bottom: 1rem; color: #333;">We\'ll contact you within 30 minutes.</p>' +
+        '<p style="margin-bottom: 1.5rem; color: #666;">For immediate service, call us directly:</p>' +
+        '<a href="tel:+14353759148" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">' +
+          '<span>&#128222;</span> (435) 375-9148' +
+        '</a>' +
+      '</div>';
 
     form.innerHTML = successHTML;
-
-    // Scroll to success message
     form.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
@@ -394,38 +397,26 @@ document.addEventListener('DOMContentLoaded', function() {
   // SHOW FORM ERROR MESSAGE
   // =====================================================
   function showFormError(form, submitBtn, originalBtnText) {
-    // Reset button state
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = originalBtnText;
-    submitBtn.style.opacity = '1';
+    console.log('[Ridgeline] Showing error message');
 
-    // Remove any existing error banners
-    const existingError = form.querySelector('.form-error-banner');
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnText;
+      submitBtn.style.opacity = '1';
+    }
+
+    var existingError = form.querySelector('.form-error-banner');
     if (existingError) {
       existingError.remove();
     }
 
-    // Create error message banner
-    const errorBanner = document.createElement('div');
+    var errorBanner = document.createElement('div');
     errorBanner.className = 'form-error-banner';
-    errorBanner.style.cssText = `
-      background-color: #f8d7da;
-      border: 1px solid #f5c6cb;
-      color: #721c24;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      text-align: center;
-    `;
-    errorBanner.innerHTML = `
-      <p style="margin: 0 0 0.5rem 0; font-weight: 600;">Something went wrong.</p>
-      <p style="margin: 0;">Please call us at <a href="tel:+14353759148" style="color: #721c24; font-weight: 600;">(435) 375-9148</a></p>
-    `;
+    errorBanner.style.cssText = 'background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;';
+    errorBanner.innerHTML = '<p style="margin: 0 0 0.5rem 0; font-weight: 600;">Something went wrong.</p>' +
+      '<p style="margin: 0;">Please call us at <a href="tel:+14353759148" style="color: #721c24; font-weight: 600;">(435) 375-9148</a></p>';
 
-    // Insert at top of form
     form.insertBefore(errorBanner, form.firstChild);
-
-    // Scroll to error
     errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
@@ -433,7 +424,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // SHOW FIELD ERROR
   // =====================================================
   function showFieldError(field, message) {
-    const errorDiv = document.createElement('div');
+    var errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.style.color = '#dc3545';
     errorDiv.style.fontSize = '0.85rem';
@@ -446,24 +437,20 @@ document.addEventListener('DOMContentLoaded', function() {
   // VALIDATE INDIVIDUAL FIELD
   // =====================================================
   function validateField(field) {
-    // Remove existing error
     field.classList.remove('field-error');
-    const existingError = field.parentElement.querySelector('.error-message');
+    var existingError = field.parentElement.querySelector('.error-message');
     if (existingError) existingError.remove();
 
-    // Skip validation if not required and empty
     if (!field.required && !field.value) return true;
 
-    // Required field check
     if (field.required && !field.value.trim()) {
       field.classList.add('field-error');
       showFieldError(field, 'This field is required');
       return false;
     }
 
-    // Email validation
     if (field.type === 'email' && field.value) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(field.value)) {
         field.classList.add('field-error');
         showFieldError(field, 'Please enter a valid email address');
@@ -471,9 +458,8 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
 
-    // Phone validation
     if (field.type === 'tel' && field.value) {
-      const digitsOnly = field.value.replace(/\D/g, '');
+      var digitsOnly = field.value.replace(/\D/g, '');
       if (digitsOnly.length < 10) {
         field.classList.add('field-error');
         showFieldError(field, 'Please enter a valid phone number');
@@ -487,19 +473,16 @@ document.addEventListener('DOMContentLoaded', function() {
   // =====================================================
   // PHONE NUMBER FORMATTING
   // =====================================================
-  const phoneInputs = document.querySelectorAll('input[type="tel"]');
+  var phoneInputs = document.querySelectorAll('input[type="tel"]');
 
   phoneInputs.forEach(function(input) {
     input.addEventListener('input', function(e) {
-      // Get only digits
-      let value = e.target.value.replace(/\D/g, '');
+      var value = e.target.value.replace(/\D/g, '');
 
-      // Limit to 10 digits
       if (value.length > 10) {
         value = value.slice(0, 10);
       }
 
-      // Format as (XXX) XXX-XXXX
       if (value.length > 0) {
         if (value.length <= 3) {
           value = '(' + value;
@@ -517,32 +500,28 @@ document.addEventListener('DOMContentLoaded', function() {
   // =====================================================
   // HEADER SCROLL EFFECT
   // =====================================================
-  const header = document.querySelector('.header');
-  let lastScrollTop = 0;
+  var header = document.querySelector('.header');
 
   window.addEventListener('scroll', function() {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    // Add shadow on scroll
     if (scrollTop > 50) {
       header.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.15)';
     } else {
       header.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
     }
-
-    lastScrollTop = scrollTop;
   });
 
   // =====================================================
   // ANIMATE ELEMENTS ON SCROLL
   // =====================================================
-  const observerOptions = {
+  var observerOptions = {
     root: null,
     rootMargin: '0px',
     threshold: 0.1
   };
 
-  const observer = new IntersectionObserver(function(entries) {
+  var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('fade-in-up');
@@ -551,85 +530,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }, observerOptions);
 
-  // Observe service cards, testimonials, etc.
-  const animateElements = document.querySelectorAll('.service-card, .testimonial-card, .why-item, .info-card, .process-step');
+  var animateElements = document.querySelectorAll('.service-card, .testimonial-card, .why-item, .info-card, .process-step');
   animateElements.forEach(function(el) {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
     observer.observe(el);
   });
 
-  // =====================================================
-  // CLICK TRACKING FOR ANALYTICS (placeholder)
-  // =====================================================
-  const ctaButtons = document.querySelectorAll('.btn-primary, .hero-phone, .header-phone, .mobile-sticky-cta a');
-
-  ctaButtons.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      // Placeholder for analytics tracking
-      // You can integrate Google Analytics, Facebook Pixel, etc.
-      const buttonText = this.textContent.trim();
-      const buttonHref = this.getAttribute('href') || 'form-submit';
-
-      // Example: Google Analytics event tracking
-      // if (typeof gtag !== 'undefined') {
-      //   gtag('event', 'click', {
-      //     'event_category': 'CTA',
-      //     'event_label': buttonText,
-      //     'value': buttonHref
-      //   });
-      // }
-    });
-  });
-
-  // =====================================================
-  // LAZY LOAD IMAGES (if any are added later)
-  // =====================================================
-  if ('loading' in HTMLImageElement.prototype) {
-    const images = document.querySelectorAll('img[loading="lazy"]');
-    images.forEach(function(img) {
-      img.src = img.dataset.src;
-    });
-  } else {
-    // Fallback for browsers that don't support lazy loading
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
-    document.body.appendChild(script);
-  }
+  console.log('[Ridgeline] Initialization complete');
 
 });
 
 // =====================================================
 // ADDITIONAL CSS FOR FORM VALIDATION (injected)
 // =====================================================
-const validationStyles = document.createElement('style');
-validationStyles.textContent = `
-  .field-error {
-    border-color: #dc3545 !important;
-    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
-  }
-
-  .form-success {
-    animation: fadeIn 0.5s ease;
-  }
-
-  .form-error-banner {
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  button[type="submit"]:disabled {
-    cursor: not-allowed;
-  }
-`;
+var validationStyles = document.createElement('style');
+validationStyles.textContent =
+  '.field-error { border-color: #dc3545 !important; box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important; }' +
+  '.form-success { animation: fadeIn 0.5s ease; }' +
+  '.form-error-banner { animation: fadeIn 0.3s ease; }' +
+  '@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }' +
+  'button[type="submit"]:disabled { cursor: not-allowed; }';
 document.head.appendChild(validationStyles);
