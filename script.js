@@ -1,7 +1,16 @@
 /**
  * Ridgeline Pest Control - Main JavaScript
- * Handles mobile menu, form validation, and smooth scrolling
+ * Handles mobile menu, form validation, HubSpot integration, and smooth scrolling
  */
+
+// HubSpot Configuration
+const HUBSPOT_CONFIG = {
+  portalId: '244959501',
+  formGuid: '8e4e4678-8d1a-4179-8859-0f593279e237',
+  region: 'na1'
+};
+
+const HUBSPOT_ENDPOINT = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_CONFIG.portalId}/${HUBSPOT_CONFIG.formGuid}`;
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -76,12 +85,12 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // =====================================================
-  // FORM VALIDATION
+  // FORM VALIDATION AND HUBSPOT SUBMISSION
   // =====================================================
   const forms = document.querySelectorAll('form');
 
   forms.forEach(function(form) {
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
       // Get all required fields
@@ -143,9 +152,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
 
-      // If form is valid, show success message
+      // If form is valid, submit to HubSpot
       if (isValid) {
-        showFormSuccess(form);
+        await submitToHubSpot(form);
       } else {
         // Focus on first invalid field
         if (firstInvalidField) {
@@ -171,6 +180,258 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  // =====================================================
+  // HUBSPOT FORM SUBMISSION
+  // =====================================================
+  async function submitToHubSpot(form) {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'Submitting...';
+    submitBtn.style.opacity = '0.7';
+
+    try {
+      // Collect form data
+      const formData = collectFormData(form);
+
+      // Build HubSpot fields array
+      const hubspotFields = buildHubSpotFields(formData);
+
+      // Prepare the submission payload
+      const payload = {
+        fields: hubspotFields,
+        context: {
+          pageUri: window.location.href,
+          pageName: document.title
+        }
+      };
+
+      // Submit to HubSpot
+      const response = await fetch(HUBSPOT_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        // Success - show success message
+        showFormSuccess(form);
+      } else {
+        // API error
+        const errorData = await response.json().catch(() => ({}));
+        console.error('HubSpot API Error:', errorData);
+        showFormError(form, submitBtn, originalBtnText);
+      }
+    } catch (error) {
+      // Network or other error
+      console.error('Form submission error:', error);
+      showFormError(form, submitBtn, originalBtnText);
+    }
+  }
+
+  // =====================================================
+  // COLLECT FORM DATA
+  // =====================================================
+  function collectFormData(form) {
+    const data = {};
+    const inputs = form.querySelectorAll('input, select, textarea');
+
+    inputs.forEach(function(input) {
+      const name = input.name || input.id;
+      if (name && input.value) {
+        data[name] = input.value.trim();
+      }
+    });
+
+    return data;
+  }
+
+  // =====================================================
+  // BUILD HUBSPOT FIELDS ARRAY
+  // =====================================================
+  function buildHubSpotFields(formData) {
+    const fields = [];
+
+    // Map form fields to HubSpot properties
+    const fieldMappings = {
+      // Name fields - try different common names
+      'name': 'firstname',
+      'contact-name': 'firstname',
+      'sidebar-name': 'firstname',
+      'firstname': 'firstname',
+      'first_name': 'firstname',
+
+      // Phone fields
+      'phone': 'phone',
+      'contact-phone': 'phone',
+      'sidebar-phone': 'phone',
+      'telephone': 'phone',
+
+      // Email fields
+      'email': 'email',
+      'contact-email': 'email',
+      'sidebar-email': 'email',
+
+      // Address fields
+      'address': 'address',
+      'contact-address': 'address',
+      'sidebar-address': 'address',
+
+      // Zip code
+      'zip': 'zip',
+      'zipcode': 'zip',
+      'postal_code': 'zip',
+
+      // Message/pest problem fields
+      'message': 'message',
+      'contact-message': 'message',
+      'sidebar-message': 'message',
+      'pest': 'message',
+      'contact-pest': 'message',
+      'sidebar-pest': 'message',
+      'pest_issues': 'message',
+      'location': 'message',
+      'sidebar-location': 'message',
+
+      // Additional fields
+      'company': 'company',
+      'sidebar-company': 'company',
+      'business_type': 'message',
+      'sidebar-type': 'message',
+      'service': 'message',
+      'sidebar-service': 'message',
+      'ant_type': 'message',
+      'sidebar-ant-type': 'message',
+      'spider_type': 'message',
+      'sidebar-spider-type': 'message',
+      'rodent_type': 'message',
+      'sidebar-rodent-type': 'message'
+    };
+
+    // Track which HubSpot fields we've already added
+    const addedFields = {};
+
+    // Process each form field
+    for (const [formField, value] of Object.entries(formData)) {
+      const hubspotField = fieldMappings[formField];
+
+      if (hubspotField) {
+        // For message field, concatenate multiple values
+        if (hubspotField === 'message') {
+          if (addedFields['message']) {
+            // Append to existing message
+            const existingField = fields.find(f => f.name === 'message');
+            if (existingField) {
+              existingField.value += ' | ' + value;
+            }
+          } else {
+            fields.push({
+              objectTypeId: '0-1',
+              name: 'message',
+              value: value
+            });
+            addedFields['message'] = true;
+          }
+        } else if (!addedFields[hubspotField]) {
+          // For name field, handle splitting if it contains full name
+          if (hubspotField === 'firstname' && value.includes(' ')) {
+            const nameParts = value.split(' ');
+            fields.push({
+              objectTypeId: '0-1',
+              name: 'firstname',
+              value: nameParts[0]
+            });
+            fields.push({
+              objectTypeId: '0-1',
+              name: 'lastname',
+              value: nameParts.slice(1).join(' ')
+            });
+            addedFields['firstname'] = true;
+            addedFields['lastname'] = true;
+          } else {
+            fields.push({
+              objectTypeId: '0-1',
+              name: hubspotField,
+              value: value
+            });
+            addedFields[hubspotField] = true;
+          }
+        }
+      }
+    }
+
+    return fields;
+  }
+
+  // =====================================================
+  // SHOW FORM SUCCESS MESSAGE
+  // =====================================================
+  function showFormSuccess(form) {
+    // Create success message
+    const successHTML = `
+      <div class="form-success" style="text-align: center; padding: 2rem 1rem;">
+        <div style="font-size: 3rem; margin-bottom: 1rem; color: #3E5A6D;">&#10004;</div>
+        <h3 style="margin-bottom: 0.5rem; color: #3E5A6D;">Thank You!</h3>
+        <p style="margin-bottom: 1rem; color: #333;">We'll contact you within 30 minutes.</p>
+        <p style="margin-bottom: 1.5rem; color: #666;">For immediate service, call us directly:</p>
+        <a href="tel:+14353759148" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+          <span>&#128222;</span> (435) 375-9148
+        </a>
+      </div>
+    `;
+
+    form.innerHTML = successHTML;
+
+    // Scroll to success message
+    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // =====================================================
+  // SHOW FORM ERROR MESSAGE
+  // =====================================================
+  function showFormError(form, submitBtn, originalBtnText) {
+    // Reset button state
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalBtnText;
+    submitBtn.style.opacity = '1';
+
+    // Remove any existing error banners
+    const existingError = form.querySelector('.form-error-banner');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Create error message banner
+    const errorBanner = document.createElement('div');
+    errorBanner.className = 'form-error-banner';
+    errorBanner.style.cssText = `
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      text-align: center;
+    `;
+    errorBanner.innerHTML = `
+      <p style="margin: 0 0 0.5rem 0; font-weight: 600;">Something went wrong.</p>
+      <p style="margin: 0;">Please call us at <a href="tel:+14353759148" style="color: #721c24; font-weight: 600;">(435) 375-9148</a></p>
+    `;
+
+    // Insert at top of form
+    form.insertBefore(errorBanner, form.firstChild);
+
+    // Scroll to error
+    errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // =====================================================
+  // SHOW FIELD ERROR
+  // =====================================================
   function showFieldError(field, message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
@@ -181,6 +442,9 @@ document.addEventListener('DOMContentLoaded', function() {
     field.parentElement.appendChild(errorDiv);
   }
 
+  // =====================================================
+  // VALIDATE INDIVIDUAL FIELD
+  // =====================================================
   function validateField(field) {
     // Remove existing error
     field.classList.remove('field-error');
@@ -218,30 +482,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     return true;
-  }
-
-  function showFormSuccess(form) {
-    // Hide the form
-    const formContent = form.innerHTML;
-
-    // Create success message
-    const successHTML = `
-      <div class="form-success" style="text-align: center; padding: 2rem 1rem;">
-        <div style="font-size: 3rem; margin-bottom: 1rem; color: #2D5016;">&#10004;</div>
-        <h3 style="margin-bottom: 0.5rem; color: #2D5016;">Thank You!</h3>
-        <p style="margin-bottom: 1rem;">Your request has been submitted successfully.</p>
-        <p style="margin-bottom: 1.5rem; color: #666;">We'll contact you within 1 business hour.</p>
-        <p style="font-weight: 600;">Need immediate help?</p>
-        <a href="tel:+14353759148" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
-          <span>&#128222;</span> Call (435) 375-9148
-        </a>
-      </div>
-    `;
-
-    form.innerHTML = successHTML;
-
-    // Scroll to success message
-    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   // =====================================================
@@ -331,9 +571,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const buttonText = this.textContent.trim();
       const buttonHref = this.getAttribute('href') || 'form-submit';
 
-      // Console log for debugging - remove in production
-      // console.log('CTA Clicked:', buttonText, buttonHref);
-
       // Example: Google Analytics event tracking
       // if (typeof gtag !== 'undefined') {
       //   gtag('event', 'click', {
@@ -376,6 +613,10 @@ validationStyles.textContent = `
     animation: fadeIn 0.5s ease;
   }
 
+  .form-error-banner {
+    animation: fadeIn 0.3s ease;
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -385,6 +626,10 @@ validationStyles.textContent = `
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  button[type="submit"]:disabled {
+    cursor: not-allowed;
   }
 `;
 document.head.appendChild(validationStyles);
