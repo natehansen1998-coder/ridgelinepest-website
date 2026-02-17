@@ -33,6 +33,9 @@ const SHEET_NAME = 'Leads';
 // Email address to receive notifications
 const EMAIL_RECIPIENT = 'your-email@example.com';
 
+// SMS notification via Verizon email-to-text gateway
+const SMS_RECIPIENT = '4353759148@vtext.com';
+
 // Company name for email subject
 const COMPANY_NAME = 'Ridgeline Pest Control';
 
@@ -46,8 +49,8 @@ const COMPANY_NAME = 'Ridgeline Pest Control';
  */
 function doPost(e) {
   try {
-    // Parse the incoming JSON data
-    const data = JSON.parse(e.postData.contents);
+    // Get data from URL-encoded form submission (compatible with no-cors fetch)
+    const data = e.parameter;
 
     // Log the submission
     console.log('Form submission received:', data);
@@ -57,6 +60,9 @@ function doPost(e) {
 
     // Send email notification
     sendEmailNotification(data);
+
+    // Send SMS notification
+    sendSmsNotification(data);
 
     // Return success response
     return ContentService
@@ -235,6 +241,34 @@ Submitted: ${data.submitted_at || new Date().toISOString()}
 }
 
 /**
+ * Send SMS notification for new lead via email-to-text gateway
+ */
+function sendSmsNotification(data) {
+  try {
+    // Skip if no SMS recipient configured
+    if (!SMS_RECIPIENT || SMS_RECIPIENT === 'number@vtext.com') {
+      console.log('SMS notification skipped - no recipient configured');
+      return;
+    }
+
+    // Keep SMS short (160 char limit)
+    const smsBody = `NEW LEAD!\n${data.name || 'Unknown'}\n${data.phone || 'No phone'}\n${data.message ? data.message.substring(0, 50) : ''}`;
+
+    MailApp.sendEmail({
+      to: SMS_RECIPIENT,
+      subject: '', // Empty subject for cleaner text
+      body: smsBody
+    });
+
+    console.log('SMS notification sent to:', SMS_RECIPIENT);
+
+  } catch (error) {
+    console.error('Error sending SMS:', error);
+    // Don't throw - SMS failure shouldn't fail the whole submission
+  }
+}
+
+/**
  * Test function - run this to verify your setup works
  */
 function testSubmission() {
@@ -253,5 +287,6 @@ function testSubmission() {
   console.log('Running test submission...');
   saveToSheet(testData);
   sendEmailNotification(testData);
-  console.log('Test complete! Check your sheet and email.');
+  sendSmsNotification(testData);
+  console.log('Test complete! Check your sheet, email, and phone for SMS.');
 }

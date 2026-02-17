@@ -124,14 +124,15 @@ document.addEventListener('DOMContentLoaded', function() {
       try {
         console.log('[Ridgeline] Sending to Google Sheets...');
 
-        // Send to Google Apps Script
+        // Send to Google Apps Script (using URL-encoded format for no-cors compatibility)
+        const formBody = new URLSearchParams(data).toString();
         await fetch(GOOGLE_APPS_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/x-www-form-urlencoded'
           },
-          body: JSON.stringify(data)
+          body: formBody
         });
 
         console.log('[Ridgeline] Request sent successfully (no-cors mode)');
