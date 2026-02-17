@@ -1,15 +1,16 @@
 /**
  * Ridgeline Pest Control - Main JavaScript
- * Handles mobile menu, form submission to Google Sheets, and smooth scrolling
+ * Handles mobile menu, form submission to Formspree, and smooth scrolling
  */
 
 // =====================================================
-// GOOGLE APPS SCRIPT URL - Submits to Google Sheets
+// FORMSPREE URL - Replace YOUR_FORM_ID with your actual Formspree form ID
+// Get your form ID at https://formspree.io after creating an account
 // =====================================================
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqE_LbhCEJYpiVhU6pXCzE8VxhDO9YZOCl8SKWMxqEMiI7gv1MzN23L8mWqz9J07MV/exec';
+const FORMSPREE_URL = 'https://formspree.io/f/xojnwkar';
 
 console.log('[Ridgeline] Script loaded');
-console.log('[Ridgeline] Forms will submit to Google Sheets via:', GOOGLE_APPS_SCRIPT_URL);
+console.log('[Ridgeline] Forms will submit to Formspree');
 
 document.addEventListener('DOMContentLoaded', function() {
   console.log('[Ridgeline] DOM loaded, initializing...');
@@ -79,13 +80,13 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // =====================================================
-  // FORM SUBMISSION TO GOOGLE SHEETS
+  // FORM SUBMISSION TO FORMSPREE
   // =====================================================
   const forms = document.querySelectorAll('form');
   console.log('[Ridgeline] Found ' + forms.length + ' form(s) on this page');
 
   forms.forEach(function(form, index) {
-    console.log('[Ridgeline] Attaching Google Sheets submit handler to form #' + index, form.id || '(no id)');
+    console.log('[Ridgeline] Attaching Formspree submit handler to form #' + index, form.id || '(no id)');
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -122,20 +123,24 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       try {
-        console.log('[Ridgeline] Sending to Google Sheets...');
+        console.log('[Ridgeline] Sending to Formspree...');
 
-        // Send to Google Apps Script (using URL-encoded format for no-cors compatibility)
-        const formBody = new URLSearchParams(data).toString();
-        await fetch(GOOGLE_APPS_SCRIPT_URL, {
+        // Send to Formspree (proper CORS support, JSON format)
+        const response = await fetch(FORMSPREE_URL, {
           method: 'POST',
-          mode: 'no-cors',
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
           },
-          body: formBody
+          body: JSON.stringify(data)
         });
 
-        console.log('[Ridgeline] Request sent successfully (no-cors mode)');
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Form submission failed');
+        }
+
+        console.log('[Ridgeline] Form submitted successfully!');
 
         // Show success message
         form.innerHTML =
@@ -235,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(el);
   });
 
-  console.log('[Ridgeline] Initialization complete - all forms connected to Google Sheets');
+  console.log('[Ridgeline] Initialization complete - all forms connected to Formspree');
 });
 
 // =====================================================
