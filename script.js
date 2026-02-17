@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
             '<div class="success-icon">&#10004;</div>' +
             '<h3>Thank You!</h3>' +
             '<p class="success-main">Your request has been submitted successfully.</p>' +
-            '<p class="success-sub">We\'ll contact you within 30 minutes!</p>' +
+            '<p class="success-sub">We\'ll contact you within 1 hour!</p>' +
             '<p class="success-phone">Need immediate help? Call:</p>' +
             '<a href="tel:+14353759148" class="btn btn-primary success-btn">' +
               '<span>&#128222;</span> (435) 375-9148' +
