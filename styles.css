@@ -2,8 +2,18 @@
    RIDGELINE PEST CONTROL - Main Stylesheet
    ===================================================== */
 
+/* Brand typeface — self-hosted Figtree variable font (OFL licensed) */
+@font-face {
+  font-family: 'Figtree';
+  src: url('fonts/figtree-latin.woff2') format('woff2');
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* CSS Variables */
 :root {
+  --font-sans: 'Figtree', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   --primary-blue: #3E5A6D;
   --primary-blue-light: #4a6a7f;
   --primary-blue-dark: #2d4452;
@@ -40,7 +50,7 @@ html {
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.6;
   color: var(--text-dark);
   background-color: var(--white);
@@ -75,8 +85,8 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--secondary-gray);
 }
 
-h1 { font-size: clamp(2rem, 5vw, 3rem); }
-h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); letter-spacing: -0.01em; }
 h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
 h4 { font-size: 1.125rem; }
 
