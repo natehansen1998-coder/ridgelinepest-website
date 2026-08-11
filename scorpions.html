@@ -58,6 +58,7 @@
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <!-- Header -->
   <header class="header">
     <div class="header-top">
@@ -71,7 +72,7 @@
         <a href="index.html" class="logo">
           <img src="logo.png" alt="Ridgeline Pest Control" class="logo-img" width="275" height="150">
         </a>
-        <nav class="nav-menu" id="navMenu">
+        <nav class="nav-menu" id="navMenu" aria-label="Main navigation">
           <a href="index.html">Home</a>
           <a href="residential.html">Residential</a>
           <a href="seasonal.html">Seasonal Pests</a>
@@ -83,17 +84,19 @@
         </nav>
         <div class="header-cta">
           <a href="tel:+14353759148" class="header-phone">
-            <span>&#128222;</span>
+            <span aria-hidden="true">&#128222;</span>
             (435) 375-9148
           </a>
           <a href="#quote-form" class="btn btn-primary">Get Free Quote</a>
         </div>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu" aria-expanded="false" aria-controls="navMenu">
           &#9776;
         </button>
       </div>
     </div>
   </header>
+
+  <main id="main-content">
 
   <!-- Page Hero -->
   <section class="page-hero">
@@ -101,7 +104,7 @@
       <h1>Scorpion Control in Washington County</h1>
       <p>Scorpions are the St. George area's most feared pest — and one of its most common. Professional scorpion treatments, blacklight inspections, and home sealing that keep them out.</p>
       <a href="tel:+14353759148" class="hero-phone">
-        <span>&#128222;</span>
+        <span aria-hidden="true">&#128222;</span>
         (435) 375-9148
       </a>
     </div>
@@ -111,19 +114,19 @@
   <section class="trust-badges">
     <div class="container">
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#128203;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#128203;</div>
         <span class="trust-badge-text">Licensed & Insured</span>
       </div>
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#127807;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#127807;</div>
         <span class="trust-badge-text">Eco-Friendly Products</span>
       </div>
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#9201;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#9201;</div>
         <span class="trust-badge-text">Same-Day Service</span>
       </div>
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#10004;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#10004;</div>
         <span class="trust-badge-text">100% Satisfaction Guarantee</span>
       </div>
     </div>
@@ -144,25 +147,25 @@
 
           <div class="pest-types">
             <div class="pest-type">
-              <h4>Arizona Bark Scorpion</h4>
+              <h3>Arizona Bark Scorpion</h3>
               <p>Small, slender, tan scorpion and the most venomous in North America. An excellent climber found in parts of Washington County — the one to take seriously.</p>
             </div>
             <div class="pest-type">
-              <h4>Desert Hairy Scorpion</h4>
+              <h3>Desert Hairy Scorpion</h3>
               <p>The largest scorpion in the U.S. — up to 6 inches. Intimidating, but its sting is usually comparable to a bee sting.</p>
             </div>
             <div class="pest-type">
-              <h4>Stripe-Tailed Scorpion</h4>
+              <h3>Stripe-Tailed Scorpion</h3>
               <p>Stocky, medium-sized scorpion with dark stripes on the tail. Common under rocks and landscaping throughout the area.</p>
             </div>
             <div class="pest-type">
-              <h4>Not Sure Which You Have?</h4>
+              <h3>Not Sure Which You Have?</h3>
               <p>Bark scorpions climb walls and hide in ceilings; ground scorpions stay low. Send us a photo or let us identify it during your inspection.</p>
             </div>
           </div>
 
           <div class="warning-box">
-            <h4>&#9888; Bark Scorpion Sting Safety</h4>
+            <h3><span aria-hidden="true">&#9888;</span> Bark Scorpion Sting Safety</h3>
             <p>Bark scorpion stings are painful and can be medically significant, especially for young children, the elderly, and pets. If a child is stung or anyone develops symptoms beyond localized pain (numbness, difficulty breathing, muscle twitching), seek medical attention right away — the Utah Poison Control line is 1-800-222-1222. If you're seeing scorpions inside your home, don't wait for a sting to act.</p>
           </div>
 
@@ -172,22 +175,22 @@
           <div class="process-steps">
             <div class="process-step">
               <div class="step-number">1</div>
-              <h4>Blacklight Inspect</h4>
+              <h3>Blacklight Inspect</h3>
               <p>Scorpions glow under UV light — we find exactly where they're hiding and entering</p>
             </div>
             <div class="process-step">
               <div class="step-number">2</div>
-              <h4>Direct Treatment</h4>
+              <h3>Direct Treatment</h3>
               <p>Targeted products applied to block walls, foundations, and harborage areas</p>
             </div>
             <div class="process-step">
               <div class="step-number">3</div>
-              <h4>Remove Food Source</h4>
+              <h3>Remove Food Source</h3>
               <p>General pest control eliminates the crickets and roaches scorpions hunt</p>
             </div>
             <div class="process-step">
               <div class="step-number">4</div>
-              <h4>Seal & Exclude</h4>
+              <h3>Seal & Exclude</h3>
               <p>Close the gaps around doors, pipes, and vents that scorpions use to get in</p>
             </div>
           </div>
@@ -214,7 +217,7 @@
           </ul>
 
           <div class="checklist">
-            <h4>Our Scorpion Control Service Includes:</h4>
+            <h3>Our Scorpion Control Service Includes:</h3>
             <ul>
               <li>UV blacklight inspection to locate harborage and entry points</li>
               <li>Direct treatment of block walls, foundations, and expansion joints</li>
@@ -304,6 +307,8 @@
     </div>
   </section>
 
+  </main>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -315,15 +320,15 @@
           </div>
           <p>Washington County's trusted pest control company. We provide fast, effective, and eco-friendly pest solutions for homes and businesses.</p>
           <div class="footer-contact-item">
-            <span>&#128222;</span>
+            <span aria-hidden="true">&#128222;</span>
             <strong><a href="tel:+14353759148">(435) 375-9148</a></strong>
           </div>
           <div class="footer-contact-item">
-            <span>&#128205;</span>
+            <span aria-hidden="true">&#128205;</span>
             <span>St. George, UT<br>Serving Washington County</span>
           </div>
           <div class="footer-contact-item">
-            <span>&#128336;</span>
+            <span aria-hidden="true">&#128336;</span>
             <span>Mon-Sat: 8:00 AM - 7:00 PM</span>
           </div>
         </div>
@@ -368,7 +373,7 @@
   <!-- Mobile Sticky CTA -->
   <div class="mobile-sticky-cta">
     <a href="tel:+14353759148">
-      <span>&#128222;</span>
+      <span aria-hidden="true">&#128222;</span>
       Call Now: (435) 375-9148
     </a>
   </div>

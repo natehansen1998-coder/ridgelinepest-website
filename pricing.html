@@ -58,6 +58,7 @@
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <!-- Header -->
   <header class="header">
     <div class="header-top">
@@ -71,7 +72,7 @@
         <a href="index.html" class="logo">
           <img src="logo.png" alt="Ridgeline Pest Control" class="logo-img" width="275" height="150">
         </a>
-        <nav class="nav-menu" id="navMenu">
+        <nav class="nav-menu" id="navMenu" aria-label="Main navigation">
           <a href="index.html">Home</a>
           <a href="residential.html">Residential</a>
           <a href="seasonal.html">Seasonal Pests</a>
@@ -83,17 +84,19 @@
         </nav>
         <div class="header-cta">
           <a href="tel:+14353759148" class="header-phone">
-            <span>&#128222;</span>
+            <span aria-hidden="true">&#128222;</span>
             (435) 375-9148
           </a>
           <a href="#quote-form" class="btn btn-primary">Get Free Quote</a>
         </div>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu" aria-expanded="false" aria-controls="navMenu">
           &#9776;
         </button>
       </div>
     </div>
   </header>
+
+  <main id="main-content">
 
   <!-- Page Hero -->
   <section class="page-hero">
@@ -101,7 +104,7 @@
       <h1>Simple, Transparent Pricing</h1>
       <p>No contracts. No hidden fees. No surprises. Just honest pest control at a fair price — and you can cancel anytime.</p>
       <a href="tel:+14353759148" class="hero-phone">
-        <span>&#128222;</span>
+        <span aria-hidden="true">&#128222;</span>
         (435) 375-9148
       </a>
     </div>
@@ -111,7 +114,7 @@
   <section class="section" style="padding-bottom: 0;">
     <div class="container">
       <div class="no-contract-banner">
-        <h3>&#127381; No contracts. Cancel anytime.</h3>
+        <h3><span aria-hidden="true">&#127381;</span> No contracts. Cancel anytime.</h3>
         <p>Every other pest control company in Washington County locks you in with annual contracts and cancellation fees up to $199. Not us. If you're not happy, you stop — no questions, no penalties.</p>
       </div>
     </div>
@@ -129,7 +132,7 @@
 
         <!-- Quarterly Plan -->
         <div class="pricing-card">
-          <div class="pricing-icon">&#128197;</div>
+          <div class="pricing-icon" aria-hidden="true">&#128197;</div>
           <h3>Quarterly</h3>
           <p class="pricing-frequency">4 treatments per year</p>
           <div class="pricing-price">
@@ -153,7 +156,7 @@
         <!-- Bi-Monthly Plan (Featured) -->
         <div class="pricing-card featured">
           <div class="pricing-badge">Most Popular</div>
-          <div class="pricing-icon">&#128504;</div>
+          <div class="pricing-icon" aria-hidden="true">&#128504;</div>
           <h3>Bi-Monthly</h3>
           <p class="pricing-frequency">6 treatments per year</p>
           <div class="pricing-price">
@@ -176,7 +179,7 @@
 
         <!-- Monthly Plan -->
         <div class="pricing-card">
-          <div class="pricing-icon">&#127968;</div>
+          <div class="pricing-icon" aria-hidden="true">&#127968;</div>
           <h3>Monthly</h3>
           <p class="pricing-frequency">12 treatments per year</p>
           <div class="pricing-price">
@@ -202,7 +205,7 @@
       <!-- One-Time Treatment -->
       <div class="one-time-box">
         <div class="one-time-content">
-          <h3>&#128269; One-Time Treatment</h3>
+          <h3><span aria-hidden="true">&#128269;</span> One-Time Treatment</h3>
           <p>Not ready for a recurring plan? We'll come out for a one-time treatment to knock out your current pest problem. If you decide to sign up for a plan afterward, we'll apply $50 toward your first service.</p>
         </div>
         <div class="one-time-price">
@@ -217,27 +220,27 @@
       </div>
       <div class="pricing-faq">
         <div class="faq-item">
-          <h4>Do I have to sign a contract?</h4>
+          <h3>Do I have to sign a contract?</h3>
           <p>No. There are no contracts and no cancellation fees. You can stop your service at any time with no penalty. We keep customers by doing good work — not by trapping them in agreements.</p>
         </div>
         <div class="faq-item">
-          <h4>What if pests come back between visits?</h4>
+          <h3>What if pests come back between visits?</h3>
           <p>We come back for free. All recurring plans include free re-service if pests return between your scheduled treatments. Just give us a call.</p>
         </div>
         <div class="faq-item">
-          <h4>What pests are covered?</h4>
+          <h3>What pests are covered?</h3>
           <p>All plans cover general pest control, spiders, and wasps/bees. This includes ants, earwigs, centipedes, silverfish, black widows, scorpions, and most common Washington County pests. Call us if you have a specific pest question.</p>
         </div>
         <div class="faq-item">
-          <h4>Are your products safe for kids and pets?</h4>
+          <h3>Are your products safe for kids and pets?</h3>
           <p>Yes. We use eco-friendly products that are safe for your family and pets once dry. We'll let you know how long to stay off treated areas after each visit.</p>
         </div>
         <div class="faq-item">
-          <h4>How do I get started?</h4>
+          <h3>How do I get started?</h3>
           <p>Fill out the form below or call us at (435) 375-9148. We'll confirm your plan, schedule your first visit, and get you taken care of — often same day.</p>
         </div>
         <div class="faq-item">
-          <h4>Do you serve my area?</h4>
+          <h3>Do you serve my area?</h3>
           <p>We serve the St. George metro area, including St. George, Washington City, Santa Clara, Ivins, Hurricane, and surrounding Washington County communities.</p>
         </div>
       </div>
@@ -259,7 +262,7 @@
           <li>Licensed and insured</li>
         </ul>
         <div class="cta-phone">
-          <div class="cta-phone-icon">&#128222;</div>
+          <div class="cta-phone-icon" aria-hidden="true">&#128222;</div>
           <div class="cta-phone-text">
             <span>Call us directly:</span>
             <strong><a href="tel:+14353759148">(435) 375-9148</a></strong>
@@ -323,6 +326,8 @@
     </div>
   </section>
 
+  </main>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -334,15 +339,15 @@
           </div>
           <p>Washington County's trusted pest control company. We provide fast, effective, and eco-friendly pest solutions for homes and businesses.</p>
           <div class="footer-contact-item">
-            <span>&#128222;</span>
+            <span aria-hidden="true">&#128222;</span>
             <strong><a href="tel:+14353759148">(435) 375-9148</a></strong>
           </div>
           <div class="footer-contact-item">
-            <span>&#128205;</span>
+            <span aria-hidden="true">&#128205;</span>
             <span>St. George, UT<br>Serving Washington County</span>
           </div>
           <div class="footer-contact-item">
-            <span>&#128336;</span>
+            <span aria-hidden="true">&#128336;</span>
             <span>Mon-Sat: 8:00 AM - 7:00 PM</span>
           </div>
         </div>
@@ -388,7 +393,7 @@
   <!-- Mobile Sticky CTA -->
   <div class="mobile-sticky-cta">
     <a href="tel:+14353759148">
-      <span>&#128222;</span>
+      <span aria-hidden="true">&#128222;</span>
       Call Now: (435) 375-9148
     </a>
   </div>

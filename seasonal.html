@@ -58,6 +58,7 @@
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <!-- Header -->
   <header class="header">
     <div class="header-top">
@@ -71,7 +72,7 @@
         <a href="index.html" class="logo">
           <img src="logo.png" alt="Ridgeline Pest Control" class="logo-img" width="275" height="150">
         </a>
-        <nav class="nav-menu" id="navMenu">
+        <nav class="nav-menu" id="navMenu" aria-label="Main navigation">
           <a href="index.html">Home</a>
           <a href="residential.html">Residential</a>
           <a href="seasonal.html" class="active">Seasonal Pests</a>
@@ -83,17 +84,19 @@
         </nav>
         <div class="header-cta">
           <a href="tel:+14353759148" class="header-phone">
-            <span>&#128222;</span>
+            <span aria-hidden="true">&#128222;</span>
             (435) 375-9148
           </a>
           <a href="#quote-form" class="btn btn-primary">Get Free Quote</a>
         </div>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu" aria-expanded="false" aria-controls="navMenu">
           &#9776;
         </button>
       </div>
     </div>
   </header>
+
+  <main id="main-content">
 
   <!-- Page Hero -->
   <section class="page-hero">
@@ -101,7 +104,7 @@
       <h1>Seasonal Pest Control in Washington County</h1>
       <p>Southern Utah's desert climate means pests never fully take a season off. Stay protected all year long with our seasonal pest control expertise.</p>
       <a href="tel:+14353759148" class="hero-phone">
-        <span>&#128222;</span>
+        <span aria-hidden="true">&#128222;</span>
         (435) 375-9148
       </a>
     </div>
@@ -111,19 +114,19 @@
   <section class="trust-badges">
     <div class="container">
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#128197;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#128197;</div>
         <span class="trust-badge-text">Year-Round Protection</span>
       </div>
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#127807;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#127807;</div>
         <span class="trust-badge-text">Eco-Friendly Products</span>
       </div>
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#9201;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#9201;</div>
         <span class="trust-badge-text">Same-Day Service</span>
       </div>
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#10004;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#10004;</div>
         <span class="trust-badge-text">100% Satisfaction Guarantee</span>
       </div>
     </div>
@@ -141,25 +144,25 @@
 
           <!-- Spring Section -->
           <div class="season-section" id="spring">
-            <h2>&#127800; Spring Pest Control (February - May)</h2>
+            <h2><span aria-hidden="true">&#127800;</span> Spring Pest Control (February - May)</h2>
             <p>Spring comes early to St. George. By February the desert is already warming, and pest activity ramps up fast — ant colonies expand, scorpions come out of their winter slowdown, and wasp queens start new nests. Early intervention now prevents summer infestations.</p>
 
             <h3>Common Spring Pests</h3>
             <div class="pest-types">
               <div class="pest-type">
-                <h4>Ants</h4>
+                <h3>Ants</h3>
                 <p>Colonies expand rapidly and forage aggressively as soil warms</p>
               </div>
               <div class="pest-type">
-                <h4>Scorpions</h4>
+                <h3>Scorpions</h3>
                 <p>Emerge from winter harborage and begin hunting at night</p>
               </div>
               <div class="pest-type">
-                <h4>Spiders</h4>
+                <h3>Spiders</h3>
                 <p>Black widows become active and start building webs around homes</p>
               </div>
               <div class="pest-type">
-                <h4>Wasps</h4>
+                <h3>Wasps</h3>
                 <p>Queens begin building new nests under eaves and in block walls</p>
               </div>
             </div>
@@ -177,7 +180,7 @@
             </ul>
 
             <div class="checklist">
-              <h4>Spring Prevention Tips:</h4>
+              <h3>Spring Prevention Tips:</h3>
               <ul>
                 <li>Seal cracks in your foundation and block walls before pests find them</li>
                 <li>Clear yard debris and rock piles where scorpions shelter</li>
@@ -190,25 +193,25 @@
 
           <!-- Summer Section -->
           <div class="season-section" id="summer">
-            <h2>&#9728; Summer Pest Control (June - September)</h2>
+            <h2><span aria-hidden="true">&#9728;</span> Summer Pest Control (June - September)</h2>
             <p>Summer is peak pest season in Washington County — and it's intense. Triple-digit heat drives scorpions and roaches indoors looking for water and shade, and the July-September monsoon triggers sudden spikes in ant and roach activity after every storm.</p>
 
             <h3>Common Summer Pests</h3>
             <div class="pest-types">
               <div class="pest-type">
-                <h4>Scorpions</h4>
+                <h3>Scorpions</h3>
                 <p>Peak season — hunting at night and slipping indoors to escape the heat</p>
               </div>
               <div class="pest-type">
-                <h4>Cockroaches</h4>
+                <h3>Cockroaches</h3>
                 <p>Turkestan and American roaches surge, especially after monsoon storms</p>
               </div>
               <div class="pest-type">
-                <h4>Ants</h4>
+                <h3>Ants</h3>
                 <p>Maximum foraging activity, with post-storm swarms during monsoon season</p>
               </div>
               <div class="pest-type">
-                <h4>Wasps & Mosquitoes</h4>
+                <h3>Wasps & Mosquitoes</h3>
                 <p>Wasp colonies peak; mosquitoes breed in monsoon runoff and standing water</p>
               </div>
             </div>
@@ -226,7 +229,7 @@
             </ul>
 
             <div class="checklist">
-              <h4>Summer Prevention Tips:</h4>
+              <h3>Summer Prevention Tips:</h3>
               <ul>
                 <li>Fix outdoor leaks and drips — water attracts everything in the desert</li>
                 <li>Eliminate standing water after monsoon storms</li>
@@ -239,25 +242,25 @@
 
           <!-- Fall Section -->
           <div class="season-section" id="fall">
-            <h2>&#127810; Fall Pest Control (October - November)</h2>
+            <h2><span aria-hidden="true">&#127810;</span> Fall Pest Control (October - November)</h2>
             <p>Fall in St. George is short and mild — daytime highs stay comfortable well into November. But as nights finally cool, scorpions, spiders, and rodents all start moving toward the warmth of your home. Fall exclusion work now prevents winter houseguests.</p>
 
             <h3>Common Fall Pests</h3>
             <div class="pest-types">
               <div class="pest-type">
-                <h4>Rodents</h4>
+                <h3>Rodents</h3>
                 <p>Mice and roof rats seeking indoor shelter as nights cool</p>
               </div>
               <div class="pest-type">
-                <h4>Scorpions</h4>
+                <h3>Scorpions</h3>
                 <p>Slipping indoors through gaps as overnight temperatures drop</p>
               </div>
               <div class="pest-type">
-                <h4>Spiders</h4>
+                <h3>Spiders</h3>
                 <p>Black widows still active; house spiders move indoors for prey</p>
               </div>
               <div class="pest-type">
-                <h4>Cockroaches</h4>
+                <h3>Cockroaches</h3>
                 <p>Moving from yards and sewers into warm wall voids and garages</p>
               </div>
             </div>
@@ -275,7 +278,7 @@
             </ul>
 
             <div class="checklist">
-              <h4>Fall Prevention Tips:</h4>
+              <h3>Fall Prevention Tips:</h3>
               <ul>
                 <li>Seal gaps around pipes, wires, and utilities</li>
                 <li>Install door sweeps on all exterior doors</li>
@@ -288,25 +291,25 @@
 
           <!-- Winter Section -->
           <div class="season-section" id="winter">
-            <h2>&#10052; Winter Pest Control (December - January)</h2>
+            <h2><span aria-hidden="true">&#10052;</span> Winter Pest Control (December - January)</h2>
             <p>St. George winters are mild — sunny 50-degree days are normal — so pests here never get the hard freeze that knocks them down up north. Rodents are the top concern, but roaches, black widows, and even ants stay active in and around the warmth of your home.</p>
 
             <h3>Common Winter Pests</h3>
             <div class="pest-types">
               <div class="pest-type">
-                <h4>Mice & Roof Rats</h4>
+                <h3>Mice & Roof Rats</h3>
                 <p>Active year-round, breeding in walls, attics, and garages</p>
               </div>
               <div class="pest-type">
-                <h4>Cockroaches</h4>
+                <h3>Cockroaches</h3>
                 <p>Sheltering in warm wall voids, water heater closets, and drains</p>
               </div>
               <div class="pest-type">
-                <h4>Black Widows</h4>
+                <h3>Black Widows</h3>
                 <p>Holed up in garages, sheds, and storage boxes</p>
               </div>
               <div class="pest-type">
-                <h4>Ants</h4>
+                <h3>Ants</h3>
                 <p>Slow down but keep foraging on warm winter days</p>
               </div>
             </div>
@@ -324,7 +327,7 @@
             </ul>
 
             <div class="checklist">
-              <h4>Winter Prevention Tips:</h4>
+              <h3>Winter Prevention Tips:</h3>
               <ul>
                 <li>Store food in sealed, rodent-proof containers</li>
                 <li>Keep storage areas clean and organized</li>
@@ -342,18 +345,18 @@
 
             <div class="info-cards">
               <div class="info-card">
-                <div class="info-card-icon">&#128197;</div>
-                <h4>Quarterly Service</h4>
+                <div class="info-card-icon" aria-hidden="true">&#128197;</div>
+                <h3>Quarterly Service</h3>
                 <p>Treatments every 3 months, timed to address seasonal pest changes</p>
               </div>
               <div class="info-card">
-                <div class="info-card-icon">&#128176;</div>
-                <h4>Save Money</h4>
+                <div class="info-card-icon" aria-hidden="true">&#128176;</div>
+                <h3>Save Money</h3>
                 <p>Recurring plans cost less than one-time emergency treatments</p>
               </div>
               <div class="info-card">
-                <div class="info-card-icon">&#128274;</div>
-                <h4>Guaranteed Protection</h4>
+                <div class="info-card-icon" aria-hidden="true">&#128274;</div>
+                <h3>Guaranteed Protection</h3>
                 <p>Free re-treatments if pests return between visits</p>
               </div>
             </div>
@@ -370,7 +373,7 @@
             </ul>
 
             <div class="warning-box">
-              <h4>&#128161; Why Year-Round Protection Makes Sense</h4>
+              <h3><span aria-hidden="true">&#128161;</span> Why Year-Round Protection Makes Sense</h3>
               <p>One-time treatments only address current problems—they don't prevent future ones. Pests are constantly looking for ways into your home. A year-round plan creates an ongoing barrier that stops them before they become an infestation, often costing less than a single emergency service call.</p>
             </div>
           </div>
@@ -438,6 +441,8 @@
     </div>
   </section>
 
+  </main>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -449,15 +454,15 @@
           </div>
           <p>Washington County's trusted pest control company. We provide fast, effective, and eco-friendly pest solutions for homes and businesses.</p>
           <div class="footer-contact-item">
-            <span>&#128222;</span>
+            <span aria-hidden="true">&#128222;</span>
             <strong><a href="tel:+14353759148">(435) 375-9148</a></strong>
           </div>
           <div class="footer-contact-item">
-            <span>&#128205;</span>
+            <span aria-hidden="true">&#128205;</span>
             <span>St. George, UT<br>Serving Washington County</span>
           </div>
           <div class="footer-contact-item">
-            <span>&#128336;</span>
+            <span aria-hidden="true">&#128336;</span>
             <span>Mon-Sat: 8:00 AM - 7:00 PM</span>
           </div>
         </div>
@@ -502,7 +507,7 @@
   <!-- Mobile Sticky CTA -->
   <div class="mobile-sticky-cta">
     <a href="tel:+14353759148">
-      <span>&#128222;</span>
+      <span aria-hidden="true">&#128222;</span>
       Call Now: (435) 375-9148
     </a>
   </div>

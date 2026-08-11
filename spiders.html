@@ -58,6 +58,7 @@
   </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <!-- Header -->
   <header class="header">
     <div class="header-top">
@@ -71,7 +72,7 @@
         <a href="index.html" class="logo">
           <img src="logo.png" alt="Ridgeline Pest Control" class="logo-img" width="275" height="150">
         </a>
-        <nav class="nav-menu" id="navMenu">
+        <nav class="nav-menu" id="navMenu" aria-label="Main navigation">
           <a href="index.html">Home</a>
           <a href="residential.html">Residential</a>
           <a href="seasonal.html">Seasonal Pests</a>
@@ -83,17 +84,19 @@
         </nav>
         <div class="header-cta">
           <a href="tel:+14353759148" class="header-phone">
-            <span>&#128222;</span>
+            <span aria-hidden="true">&#128222;</span>
             (435) 375-9148
           </a>
           <a href="#quote-form" class="btn btn-primary">Get Free Quote</a>
         </div>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu" aria-expanded="false" aria-controls="navMenu">
           &#9776;
         </button>
       </div>
     </div>
   </header>
+
+  <main id="main-content">
 
   <!-- Page Hero -->
   <section class="page-hero">
@@ -101,7 +104,7 @@
       <h1>Spider Removal & Prevention Services</h1>
       <p>Take back your home from unwanted eight-legged guests. Professional spider control that's safe for your family and effective against all species.</p>
       <a href="tel:+14353759148" class="hero-phone">
-        <span>&#128222;</span>
+        <span aria-hidden="true">&#128222;</span>
         (435) 375-9148
       </a>
     </div>
@@ -111,19 +114,19 @@
   <section class="trust-badges">
     <div class="container">
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#128203;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#128203;</div>
         <span class="trust-badge-text">Licensed & Insured</span>
       </div>
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#127807;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#127807;</div>
         <span class="trust-badge-text">Eco-Friendly Products</span>
       </div>
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#9201;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#9201;</div>
         <span class="trust-badge-text">Same-Day Service</span>
       </div>
       <div class="trust-badge">
-        <div class="trust-badge-icon">&#10004;</div>
+        <div class="trust-badge-icon" aria-hidden="true">&#10004;</div>
         <span class="trust-badge-text">100% Satisfaction Guarantee</span>
       </div>
     </div>
@@ -144,25 +147,25 @@
 
           <div class="pest-types">
             <div class="pest-type">
-              <h4>Black Widows</h4>
+              <h3>Black Widows</h3>
               <p>Shiny black with red hourglass marking. Venomous bite requires medical attention. Found in dark, undisturbed areas.</p>
             </div>
             <div class="pest-type">
-              <h4>Desert Recluses</h4>
+              <h3>Desert Recluses</h3>
               <p>Tan to brown with long legs. Native to southern Utah's low deserts. Reclusive by nature but medically significant if bitten.</p>
             </div>
             <div class="pest-type">
-              <h4>Wolf Spiders</h4>
+              <h3>Wolf Spiders</h3>
               <p>Large, hairy, brown spiders. They don't spin webs but actively hunt. Often found outdoors but enter homes.</p>
             </div>
             <div class="pest-type">
-              <h4>House Spiders</h4>
+              <h3>House Spiders</h3>
               <p>Small, brown spiders that create messy webs in corners. Harmless but unsightly and persistent.</p>
             </div>
           </div>
 
           <div class="warning-box">
-            <h4>&#9888; Black Widow Safety Warning</h4>
+            <h3><span aria-hidden="true">&#9888;</span> Black Widow Safety Warning</h3>
             <p>Black widow spiders thrive in Washington County's desert climate and their bites can be medically significant, especially for children, elderly, and pets. If you suspect black widows on your property, avoid disturbing them and call us immediately. Common hiding spots include block walls, woodpiles, outdoor storage, garages, and dark corners.</p>
           </div>
 
@@ -172,22 +175,22 @@
           <div class="process-steps">
             <div class="process-step">
               <div class="step-number">1</div>
-              <h4>Inspect</h4>
+              <h3>Inspect</h3>
               <p>Thorough inspection to identify species and hiding spots</p>
             </div>
             <div class="process-step">
               <div class="step-number">2</div>
-              <h4>De-Web</h4>
+              <h3>De-Web</h3>
               <p>Remove existing webs and egg sacs from all surfaces</p>
             </div>
             <div class="process-step">
               <div class="step-number">3</div>
-              <h4>Treat</h4>
+              <h3>Treat</h3>
               <p>Apply targeted treatments to harborage areas and entry points</p>
             </div>
             <div class="process-step">
               <div class="step-number">4</div>
-              <h4>Protect</h4>
+              <h3>Protect</h3>
               <p>Create barriers to prevent new spiders from entering</p>
             </div>
           </div>
@@ -213,7 +216,7 @@
           </ul>
 
           <div class="checklist">
-            <h4>Our Spider Control Service Includes:</h4>
+            <h3>Our Spider Control Service Includes:</h3>
             <ul>
               <li>Complete exterior de-webbing (eaves, windows, doors, lights)</li>
               <li>Interior inspection and treatment of problem areas</li>
@@ -303,6 +306,8 @@
     </div>
   </section>
 
+  </main>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -314,15 +319,15 @@
           </div>
           <p>Washington County's trusted pest control company. We provide fast, effective, and eco-friendly pest solutions for homes and businesses.</p>
           <div class="footer-contact-item">
-            <span>&#128222;</span>
+            <span aria-hidden="true">&#128222;</span>
             <strong><a href="tel:+14353759148">(435) 375-9148</a></strong>
           </div>
           <div class="footer-contact-item">
-            <span>&#128205;</span>
+            <span aria-hidden="true">&#128205;</span>
             <span>St. George, UT<br>Serving Washington County</span>
           </div>
           <div class="footer-contact-item">
-            <span>&#128336;</span>
+            <span aria-hidden="true">&#128336;</span>
             <span>Mon-Sat: 8:00 AM - 7:00 PM</span>
           </div>
         </div>
@@ -367,7 +372,7 @@
   <!-- Mobile Sticky CTA -->
   <div class="mobile-sticky-cta">
     <a href="tel:+14353759148">
-      <span>&#128222;</span>
+      <span aria-hidden="true">&#128222;</span>
       Call Now: (435) 375-9148
     </a>
   </div>
