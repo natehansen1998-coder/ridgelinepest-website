@@ -3,18 +3,9 @@
  * Handles mobile menu, form submission to Formspree, and smooth scrolling
  */
 
-// =====================================================
-// FORMSPREE URL - Replace YOUR_FORM_ID with your actual Formspree form ID
-// Get your form ID at https://formspree.io after creating an account
-// =====================================================
 const FORMSPREE_URL = 'https://formspree.io/f/xojnwkar';
 
-console.log('[Ridgeline] Script loaded');
-console.log('[Ridgeline] Forms will submit to Formspree');
-
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('[Ridgeline] DOM loaded, initializing...');
-
   // =====================================================
   // MOBILE MENU TOGGLE
   // =====================================================
@@ -81,18 +72,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // =====================================================
   // FORM SUBMISSION TO FORMSPREE
+  // Forms also carry action="https://formspree.io/f/..." so a plain
+  // POST still delivers the lead if this script never runs.
   // =====================================================
   const forms = document.querySelectorAll('form');
-  console.log('[Ridgeline] Found ' + forms.length + ' form(s) on this page');
 
-  forms.forEach(function(form, index) {
-    console.log('[Ridgeline] Attaching Formspree submit handler to form #' + index, form.id || '(no id)');
+  function showFormError(form) {
+    let err = form.querySelector('.form-error-message');
+    if (!err) {
+      err = document.createElement('div');
+      err.className = 'form-error-message';
+      err.setAttribute('role', 'alert');
+      const submitWrap = form.querySelector('.form-submit');
+      if (submitWrap) {
+        form.insertBefore(err, submitWrap);
+      } else {
+        form.appendChild(err);
+      }
+    }
+    err.innerHTML = 'Something went wrong sending your request. Please try again, or call us at <a href="tel:+14353759148">(435) 375-9148</a>.';
+  }
 
+  forms.forEach(function(form) {
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       e.stopPropagation();
-
-      console.log('[Ridgeline] ========== FORM SUBMIT ==========');
 
       // Collect form data using FormData API
       const data = {};
@@ -109,8 +113,6 @@ document.addEventListener('DOMContentLoaded', function() {
       data.page_title = document.title;
       data.submitted_at = new Date().toISOString();
 
-      console.log('[Ridgeline] Form data to send:', data);
-
       // Get submit button
       const submitBtn = form.querySelector('button[type="submit"]');
       const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
@@ -123,8 +125,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       try {
-        console.log('[Ridgeline] Sending to Formspree...');
-
         // Send to Formspree (proper CORS support, JSON format)
         const response = await fetch(FORMSPREE_URL, {
           method: 'POST',
@@ -139,8 +139,6 @@ document.addEventListener('DOMContentLoaded', function() {
           const errorData = await response.json();
           throw new Error(errorData.error || 'Form submission failed');
         }
-
-        console.log('[Ridgeline] Form submitted successfully!');
 
         // Show success message
         form.innerHTML =
@@ -158,10 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
         form.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
       } catch (error) {
-        console.error('[Ridgeline] Error:', error);
-
-        // Show error message
-        alert('Something went wrong. Please call us at (435) 375-9148');
+        showFormError(form);
 
         // Re-enable submit button
         if (submitBtn) {
@@ -217,34 +212,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // =====================================================
   // ANIMATE ELEMENTS ON SCROLL
+  // Content is visible by default; it is only hidden (via the
+  // .pre-animate class) once we know the observer can reveal it,
+  // and a safety timer reveals everything regardless.
   // =====================================================
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1
-  };
+  if ('IntersectionObserver' in window) {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
 
-  const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in-up');
-        observer.unobserve(entry.target);
-      }
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in-up');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const animateElements = document.querySelectorAll('.service-card, .testimonial-card, .why-item, .info-card, .process-step');
+    animateElements.forEach(function(el) {
+      el.classList.add('pre-animate');
+      observer.observe(el);
     });
-  }, observerOptions);
 
-  const animateElements = document.querySelectorAll('.service-card, .testimonial-card, .why-item, .info-card, .process-step');
-  animateElements.forEach(function(el) {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    observer.observe(el);
-  });
-
-  console.log('[Ridgeline] Initialization complete - all forms connected to Formspree');
+    // Safety net: never leave content hidden
+    setTimeout(function() {
+      animateElements.forEach(function(el) {
+        el.classList.add('fade-in-up');
+      });
+    }, 3000);
+  }
 });
 
 // =====================================================
-// CSS FOR FORM SUCCESS MESSAGE
+// CSS FOR FORM SUCCESS / ERROR MESSAGES
 // =====================================================
 const formStyles = document.createElement('style');
 formStyles.textContent =
@@ -256,6 +260,8 @@ formStyles.textContent =
   '.form-success-message .success-phone { color: rgba(255,255,255,0.85); margin-bottom: 0.5rem; font-size: 0.9rem; }' +
   '.form-success-message .success-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: #E67E42; color: white; padding: 0.75rem 1.5rem; border-radius: 5px; text-decoration: none; font-weight: bold; }' +
   '.form-success-message .success-btn:hover { background: #d06a2f; }' +
+  '.form-error-message { background: #FDECEA; border: 1px solid #E57373; color: #B71C1C; border-radius: 5px; padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.95rem; }' +
+  '.form-error-message a { color: #B71C1C; font-weight: bold; text-decoration: underline; }' +
   '@keyframes fadeInUp { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }';
 
 document.head.appendChild(formStyles);
