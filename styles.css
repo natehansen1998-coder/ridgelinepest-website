@@ -68,6 +68,20 @@ textarea {
   font: inherit;
 }
 
+/* Inline SVG icon system (icons.svg sprite) — sized by container font-size */
+.icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: -0.125em;
+}
+
+h2 .icon,
+h3 .icon {
+  width: 0.85em;
+  height: 0.85em;
+}
+
 a {
   text-decoration: none;
   color: inherit;

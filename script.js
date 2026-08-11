@@ -143,13 +143,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show success message
         form.innerHTML =
           '<div class="form-success-message">' +
-            '<div class="success-icon">&#10004;</div>' +
+            '<div class="success-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#check"></use></svg></div>' +
             '<h3>Thank You!</h3>' +
             '<p class="success-main">Your request has been submitted successfully.</p>' +
             '<p class="success-sub">We\'ll contact you within 1 hour!</p>' +
             '<p class="success-phone">Need immediate help? Call:</p>' +
             '<a href="tel:+14353759148" class="btn btn-primary success-btn">' +
-              '<span>&#128222;</span> (435) 375-9148' +
+              '<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#phone"></use></svg> (435) 375-9148' +
             '</a>' +
           '</div>';
 
