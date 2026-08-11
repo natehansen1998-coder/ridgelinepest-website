@@ -305,6 +305,27 @@ p {
   padding: 0.5rem;
 }
 
+/* 8-item nav needs tighter spacing before the mobile breakpoint */
+@media (max-width: 1350px) {
+  .nav-menu {
+    gap: 1.25rem;
+  }
+
+  .nav-menu a {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 1120px) {
+  .nav-menu {
+    gap: 0.9rem;
+  }
+
+  .header-phone {
+    font-size: 1.05rem;
+  }
+}
+
 /* Mobile Navigation */
 @media (max-width: 992px) {
   .nav-menu {
