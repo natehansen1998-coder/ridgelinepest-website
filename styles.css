@@ -13,6 +13,9 @@
   --secondary-gray: #333333;
   --accent-orange: #E67E42;
   --accent-orange-hover: #d46a2e;
+  /* AA-contrast orange for surfaces carrying white text (4.58:1) */
+  --accent-orange-deep: #C05617;
+  --accent-orange-deep-hover: #A94A11;
   --light-gray: #f5f5f5;
   --white: #ffffff;
   --text-dark: #2c2c2c;
@@ -132,12 +135,12 @@ p {
 }
 
 .btn-primary {
-  background-color: var(--accent-orange);
+  background-color: var(--accent-orange-deep);
   color: var(--white);
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-orange-hover);
+  background-color: var(--accent-orange-deep-hover);
   transform: translateY(-2px);
   box-shadow: var(--shadow);
 }
@@ -919,7 +922,7 @@ p {
    SPECIAL OFFER BANNER
    ===================================================== */
 .offer-banner {
-  background: linear-gradient(135deg, var(--accent-orange) 0%, #c44d00 100%);
+  background: linear-gradient(135deg, var(--accent-orange-deep) 0%, #933A00 100%);
   color: var(--white);
   padding: 3rem 0;
   text-align: center;
@@ -940,7 +943,7 @@ p {
 .offer-badge {
   display: inline-block;
   background-color: var(--white);
-  color: var(--accent-orange);
+  color: var(--accent-orange-deep);
   font-size: 2.5rem;
   font-weight: 800;
   padding: 1rem 2rem;
@@ -950,7 +953,7 @@ p {
 
 .offer-banner .btn {
   background-color: var(--white);
-  color: var(--accent-orange);
+  color: var(--accent-orange-deep);
 }
 
 .offer-banner .btn:hover {
@@ -1636,7 +1639,7 @@ p {
   top: -14px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--accent-orange);
+  background-color: var(--accent-orange-deep);
   color: var(--white);
   padding: 0.35rem 1.25rem;
   border-radius: 20px;
@@ -1874,6 +1877,6 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 3px solid var(--accent-orange);
+  outline: 3px solid var(--accent-orange-deep);
   outline-offset: 2px;
 }

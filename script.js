@@ -258,8 +258,8 @@ formStyles.textContent =
   '.form-success-message .success-main { color: rgba(255,255,255,0.95); font-size: 1rem; margin-bottom: 0.25rem; }' +
   '.form-success-message .success-sub { color: rgba(255,255,255,0.85); margin-bottom: 0.75rem; }' +
   '.form-success-message .success-phone { color: rgba(255,255,255,0.85); margin-bottom: 0.5rem; font-size: 0.9rem; }' +
-  '.form-success-message .success-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: #E67E42; color: white; padding: 0.75rem 1.5rem; border-radius: 5px; text-decoration: none; font-weight: bold; }' +
-  '.form-success-message .success-btn:hover { background: #d06a2f; }' +
+  '.form-success-message .success-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: #C05617; color: white; padding: 0.75rem 1.5rem; border-radius: 5px; text-decoration: none; font-weight: bold; }' +
+  '.form-success-message .success-btn:hover { background: #A94A11; }' +
   '.form-error-message { background: #FDECEA; border: 1px solid #E57373; color: #B71C1C; border-radius: 5px; padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.95rem; }' +
   '.form-error-message a { color: #B71C1C; font-weight: bold; text-decoration: underline; }' +
   '@keyframes fadeInUp { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }';
