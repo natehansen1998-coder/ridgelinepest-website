@@ -814,6 +814,48 @@ p {
   margin-bottom: 1rem;
 }
 
+.county-map {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  margin-bottom: 1.25rem;
+}
+
+.area-map p {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.county-shape {
+  fill: rgba(255, 255, 255, 0.12);
+  stroke: rgba(255, 255, 255, 0.75);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.county-city circle {
+  fill: var(--white);
+}
+
+.county-city text {
+  fill: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  text-anchor: middle;
+}
+
+.county-city-hq circle {
+  fill: var(--accent-orange);
+  stroke: var(--white);
+  stroke-width: 2.5;
+}
+
+.county-city-hq text {
+  fill: var(--white);
+  font-size: 17px;
+  font-weight: 700;
+}
+
 .area-map h3 {
   color: var(--white);
   font-size: 1.5rem;
