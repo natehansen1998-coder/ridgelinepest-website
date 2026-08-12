@@ -7,26 +7,14 @@ const FORMSPREE_URL = 'https://formspree.io/f/xojnwkar';
 
 // =====================================================
 // ANALYTICS (GA4)
-// Paste the measurement ID (G-XXXXXXXXXX) once the GA4
-// property exists. Empty string = analytics fully off.
+// The gtag snippet lives inline in each page's <head>
+// (Google's detector requires it there). This helper
+// no-ops if the snippet is ever removed.
 // =====================================================
-const GA4_ID = 'G-N5N142MWMK';
-
 function track(eventName, params) {
   if (typeof window.gtag === 'function') {
     window.gtag('event', eventName, params || {});
   }
-}
-
-if (GA4_ID) {
-  const gtagScript = document.createElement('script');
-  gtagScript.async = true;
-  gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
-  document.head.appendChild(gtagScript);
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function() { dataLayer.push(arguments); };
-  gtag('js', new Date());
-  gtag('config', GA4_ID);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
