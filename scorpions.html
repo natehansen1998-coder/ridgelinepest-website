@@ -255,22 +255,19 @@
             <h3>Free Scorpion Inspection</h3>
             <p>Find out where they're hiding and how they're getting in!</p>
             <form id="sidebarForm" action="https://formspree.io/f/xojnwkar" method="POST">
+              <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
               <input type="hidden" name="_subject" value="New Lead from Ridgeline Pest - Scorpion Control">
               <div class="form-group">
                 <label for="sidebar-name">Name *</label>
-                <input type="text" id="sidebar-name" name="name" required>
+                <input type="text" id="sidebar-name" name="name" required autocomplete="name">
               </div>
               <div class="form-group">
                 <label for="sidebar-phone">Phone *</label>
-                <input type="tel" id="sidebar-phone" name="phone" required pattern="[0-9\-\(\)\s]+">
+                <input type="tel" id="sidebar-phone" name="phone" required pattern="[0-9\(\)\+\.\-\s]{7,20}" autocomplete="tel">
               </div>
               <div class="form-group">
-                <label for="sidebar-email">Email</label>
-                <input type="email" id="sidebar-email" name="email">
-              </div>
-              <div class="form-group">
-                <label for="sidebar-address">Address *</label>
-                <input type="text" id="sidebar-address" name="address" required>
+                <label for="sidebar-zip">Zip Code *</label>
+                <input type="text" id="sidebar-zip" name="zip" required pattern="[0-9]{5}" maxlength="5" inputmode="numeric" autocomplete="postal-code">
               </div>
               <div class="form-group">
                 <label for="sidebar-scorpion-activity">How often are you seeing them?</label>
@@ -283,14 +280,10 @@
                   <option value="unsure">Not sure / prevention</option>
                 </select>
               </div>
-              <div class="form-group">
-                <label for="sidebar-location">Where do you see them?</label>
-                <textarea id="sidebar-location" name="location" rows="3" placeholder="Garage, patio, bathroom, bedroom, block wall, etc..."></textarea>
-              </div>
               <div class="form-submit">
-                <button type="submit" class="btn btn-primary">Get Free Quote</button>
+                <button type="submit" class="btn btn-primary">Get My Free Quote</button>
               </div>
-              <p class="form-note">Same-day service available!</p>
+              <p class="form-note">Same-day service available. We'll call you back within 1 business hour.</p>
             </form>
           </div>
         </aside>

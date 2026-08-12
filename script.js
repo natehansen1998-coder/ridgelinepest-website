@@ -77,6 +77,84 @@ document.addEventListener('DOMContentLoaded', function() {
   // =====================================================
   const forms = document.querySelectorAll('form');
 
+  // Inline validation: friendly messages on blur, never on keystroke.
+  // Native browser validation stays active as a no-JS fallback because
+  // novalidate is only added here, at runtime.
+  const WASHINGTON_COUNTY_ZIPS = [
+    '84722', '84725', '84733', '84737', '84738', '84745', '84746', '84757',
+    '84763', '84765', '84767', '84770', '84771', '84774', '84779', '84780',
+    '84781', '84782', '84783', '84784', '84790', '84791'
+  ];
+
+  const FIELD_MESSAGES = {
+    name: 'Please enter your name.',
+    phone: 'Please enter your phone number.',
+    zip: 'Please enter your 5-digit zip code.'
+  };
+
+  function getFieldError(input) {
+    if (input.name === '_gotcha' || input.type === 'hidden') return '';
+    const value = input.value.trim();
+    if (input.hasAttribute('required') && !value) {
+      return FIELD_MESSAGES[input.name] || 'This field is required.';
+    }
+    if (!value) return '';
+    if (input.type === 'tel' && value.replace(/\D/g, '').length < 10) {
+      return 'Please enter a 10-digit phone number.';
+    }
+    if (input.name === 'zip' && !/^[0-9]{5}$/.test(value)) {
+      return 'Please enter a 5-digit zip code.';
+    }
+    if (input.type === 'email' && input.validity.typeMismatch) {
+      return 'That email address doesn\'t look right.';
+    }
+    return '';
+  }
+
+  function messageEl(input, className) {
+    const group = input.closest('.form-group') || input.parentElement;
+    let el = group.querySelector('.' + className);
+    if (!el) {
+      el = document.createElement('div');
+      el.className = className;
+      group.appendChild(el);
+    }
+    return el;
+  }
+
+  function showFieldError(input) {
+    const error = getFieldError(input);
+    const el = messageEl(input, 'field-error');
+    el.textContent = error;
+    el.style.display = error ? 'block' : 'none';
+    input.classList.toggle('field-invalid', !!error);
+    input.setAttribute('aria-invalid', error ? 'true' : 'false');
+    return !error;
+  }
+
+  function showZipNote(input) {
+    const value = input.value.trim();
+    const outside = /^[0-9]{5}$/.test(value) && WASHINGTON_COUNTY_ZIPS.indexOf(value) === -1;
+    const el = messageEl(input, 'zip-note');
+    el.textContent = outside
+      ? 'That zip looks outside our usual service area. Send it anyway and we\'ll confirm when we call.'
+      : '';
+    el.style.display = outside ? 'block' : 'none';
+  }
+
+  function validateForm(form) {
+    let firstInvalid = null;
+    form.querySelectorAll('input, select, textarea').forEach(function(input) {
+      if (!showFieldError(input) && !firstInvalid) {
+        firstInvalid = input;
+      }
+    });
+    if (firstInvalid) {
+      firstInvalid.focus();
+    }
+    return !firstInvalid;
+  }
+
   function showFormError(form) {
     let err = form.querySelector('.form-error-message');
     if (!err) {
@@ -94,9 +172,37 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   forms.forEach(function(form) {
+    // Custom validation takes over only when JS is running
+    form.setAttribute('novalidate', '');
+
+    form.querySelectorAll('input, select, textarea').forEach(function(input) {
+      if (input.name === '_gotcha' || input.type === 'hidden') return;
+
+      input.addEventListener('blur', function() {
+        // Only validate fields the user has interacted with
+        if (input.value.trim() || input.classList.contains('field-invalid')) {
+          showFieldError(input);
+        }
+        if (input.name === 'zip') {
+          showZipNote(input);
+        }
+      });
+
+      // Reward early: clear an error as soon as the fix is typed
+      input.addEventListener('input', function() {
+        if (input.classList.contains('field-invalid')) {
+          showFieldError(input);
+        }
+      });
+    });
+
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       e.stopPropagation();
+
+      if (!validateForm(form)) {
+        return;
+      }
 
       // Collect form data using FormData API
       const data = {};
@@ -146,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function() {
             '<div class="success-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#check"></use></svg></div>' +
             '<h3>Thank You!</h3>' +
             '<p class="success-main">Your request has been submitted successfully.</p>' +
-            '<p class="success-sub">We\'ll contact you within 1 hour!</p>' +
+            '<p class="success-sub">We\'ll call you back within 1 business hour.</p>' +
             '<p class="success-phone">Need immediate help? Call:</p>' +
             '<a href="tel:+14353759148" class="btn btn-primary success-btn">' +
               '<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#phone"></use></svg> (435) 375-9148' +
@@ -262,6 +368,9 @@ formStyles.textContent =
   '.form-success-message .success-btn:hover { background: #A94A11; }' +
   '.form-error-message { background: #FDECEA; border: 1px solid #E57373; color: #B71C1C; border-radius: 5px; padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.95rem; }' +
   '.form-error-message a { color: #B71C1C; font-weight: bold; text-decoration: underline; }' +
+  '.field-error { display: none; color: #B71C1C; font-size: 0.85rem; margin-top: 0.3rem; }' +
+  '.zip-note { display: none; color: #5A6B75; font-size: 0.85rem; margin-top: 0.3rem; }' +
+  'input.field-invalid, select.field-invalid { border-color: #E57373; }' +
   '@keyframes fadeInUp { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }';
 
 document.head.appendChild(formStyles);

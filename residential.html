@@ -231,26 +231,23 @@
             <h3>Get Your Free Quote</h3>
             <p>Schedule your home inspection today!</p>
             <form id="sidebarForm" action="https://formspree.io/f/xojnwkar" method="POST">
+              <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
               <input type="hidden" name="_subject" value="New Lead from Ridgeline Pest - Residential Page">
               <div class="form-group">
                 <label for="sidebar-name">Name *</label>
-                <input type="text" id="sidebar-name" name="name" required>
+                <input type="text" id="sidebar-name" name="name" required autocomplete="name">
               </div>
               <div class="form-group">
                 <label for="sidebar-phone">Phone *</label>
-                <input type="tel" id="sidebar-phone" name="phone" required pattern="[0-9\-\(\)\s]+">
+                <input type="tel" id="sidebar-phone" name="phone" required pattern="[0-9\(\)\+\.\-\s]{7,20}" autocomplete="tel">
               </div>
               <div class="form-group">
-                <label for="sidebar-email">Email</label>
-                <input type="email" id="sidebar-email" name="email">
+                <label for="sidebar-zip">Zip Code *</label>
+                <input type="text" id="sidebar-zip" name="zip" required pattern="[0-9]{5}" maxlength="5" inputmode="numeric" autocomplete="postal-code">
               </div>
               <div class="form-group">
-                <label for="sidebar-address">Address</label>
-                <input type="text" id="sidebar-address" name="address">
-              </div>
-              <div class="form-group">
-                <label for="sidebar-pest">Pest Problem *</label>
-                <select id="sidebar-pest" name="pest" required>
+                <label for="sidebar-pest">Pest Problem</label>
+                <select id="sidebar-pest" name="pest">
                   <option value="">Select pest type...</option>
                   <option value="ants">Ants</option>
                   <option value="spiders">Spiders</option>
@@ -262,14 +259,10 @@
                   <option value="other">Other</option>
                 </select>
               </div>
-              <div class="form-group">
-                <label for="sidebar-message">Details</label>
-                <textarea id="sidebar-message" name="message" rows="3" placeholder="Describe your pest issue..."></textarea>
-              </div>
               <div class="form-submit">
-                <button type="submit" class="btn btn-primary">Get Free Quote</button>
+                <button type="submit" class="btn btn-primary">Get My Free Quote</button>
               </div>
-              <p class="form-note">Fast response - usually within 1 hour!</p>
+              <p class="form-note">Same-day service available. We'll call you back within 1 business hour.</p>
             </form>
           </div>
         </aside>
