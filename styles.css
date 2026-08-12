@@ -2045,3 +2045,67 @@ textarea:focus-visible {
   outline: 3px solid var(--accent-orange-deep);
   outline-offset: 2px;
 }
+
+/* =====================================================
+   CONVERSION ELEMENTS (honeypot, hero proof, mid-page CTA)
+   ===================================================== */
+
+/* Honeypot field: must stay hidden even when JS never runs */
+.hp-field {
+  position: absolute !important;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Social proof strip under the hero form */
+.hero-proof {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--light-gray);
+  font-size: 0.85rem;
+  color: var(--text-light);
+  text-align: center;
+}
+
+.hero-proof .proof-stars {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--accent-orange-deep);
+  letter-spacing: 2px;
+  font-size: 1rem;
+}
+
+/* Pricing transparency link in the hero */
+.hero-pricing-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 0.95rem;
+}
+
+.hero-pricing-link:hover {
+  color: var(--accent-orange);
+}
+
+/* Mid-page CTA at a Z-pattern scan terminus */
+.section-cta {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.section-cta-alt {
+  display: block;
+  margin-top: 0.75rem;
+  color: inherit;
+}
+
+.section-cta-alt a {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

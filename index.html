@@ -113,26 +113,32 @@
           <a href="#quote-form" class="btn btn-primary btn-lg">Get Free Quote</a>
           <a href="tel:+14353759148" class="btn btn-outline-white btn-lg">Call Now</a>
         </div>
+        <a href="pricing.html" class="hero-pricing-link">See our exact prices. No contracts, no hidden fees.</a>
       </div>
       <div class="hero-form">
         <h3>Get Your Free Quote</h3>
         <p>Fast response - usually within 1 hour!</p>
         <form id="heroForm" action="https://formspree.io/f/xojnwkar" method="POST">
+          <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
           <input type="hidden" name="_subject" value="New Lead from Ridgeline Pest - Home Page">
           <div class="form-group">
-            <input type="text" name="name" placeholder="Your Name *" aria-label="Your name" required>
+            <input type="text" name="name" placeholder="Your Name *" aria-label="Your name" required autocomplete="name">
           </div>
           <div class="form-group">
-            <input type="tel" name="phone" placeholder="Phone Number *" aria-label="Phone number" required pattern="[0-9\-\(\)\s]+">
+            <input type="tel" name="phone" placeholder="Phone Number *" aria-label="Phone number" required pattern="[0-9\(\)\+\.\-\s]{7,20}" autocomplete="tel">
           </div>
           <div class="form-group">
-            <input type="text" name="zip" placeholder="Zip Code *" aria-label="Zip code" required pattern="[0-9]{5}">
+            <input type="text" name="zip" placeholder="Zip Code *" aria-label="Zip code" required pattern="[0-9]{5}" maxlength="5" inputmode="numeric" autocomplete="postal-code">
           </div>
           <div class="form-submit">
             <button type="submit" class="btn btn-primary btn-lg">Get My Free Quote</button>
           </div>
           <p class="form-note">No spam. We respect your privacy.</p>
         </form>
+        <div class="hero-proof">
+          <span class="proof-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          "Ridgeline came out the same day I called." - Jennifer M., Ridgeline customer
+        </div>
       </div>
     </div>
   </section>
@@ -250,6 +256,10 @@
           <h3>Local Experts</h3>
           <p>We know Washington County pests inside and out</p>
         </div>
+      </div>
+      <div class="section-cta">
+        <a href="#quote-form" class="btn btn-primary btn-lg">Get My Free Quote</a>
+        <span class="section-cta-alt">or call <a href="tel:+14353759148">(435) 375-9148</a></span>
       </div>
     </div>
   </section>
@@ -390,28 +400,29 @@
         <h3>Get Your Free Quote</h3>
         <p>Fill out the form below and we'll contact you within 1 business hour.</p>
         <form id="contactForm" action="https://formspree.io/f/xojnwkar" method="POST">
+          <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
           <input type="hidden" name="_subject" value="New Lead from Ridgeline Pest - Contact Form">
           <div class="form-row">
             <div class="form-group">
               <label for="contact-name">Name *</label>
-              <input type="text" id="contact-name" name="name" required>
+              <input type="text" id="contact-name" name="name" required autocomplete="name">
             </div>
             <div class="form-group">
               <label for="contact-phone">Phone *</label>
-              <input type="tel" id="contact-phone" name="phone" required pattern="[0-9\-\(\)\s]+">
+              <input type="tel" id="contact-phone" name="phone" required pattern="[0-9\(\)\+\.\-\s]{7,20}" autocomplete="tel">
             </div>
           </div>
           <div class="form-group">
             <label for="contact-email">Email</label>
-            <input type="email" id="contact-email" name="email">
+            <input type="email" id="contact-email" name="email" autocomplete="email">
           </div>
           <div class="form-group">
-            <label for="contact-address">Address</label>
-            <input type="text" id="contact-address" name="address">
+            <label for="contact-zip">Zip Code *</label>
+            <input type="text" id="contact-zip" name="zip" required pattern="[0-9]{5}" maxlength="5" inputmode="numeric" autocomplete="postal-code">
           </div>
           <div class="form-group">
-            <label for="contact-pest">Pest Problem *</label>
-            <select id="contact-pest" name="pest" required>
+            <label for="contact-pest">Pest Problem</label>
+            <select id="contact-pest" name="pest">
               <option value="">Select pest type...</option>
               <option value="ants">Ants</option>
               <option value="spiders">Spiders</option>
@@ -430,8 +441,9 @@
             <textarea id="contact-message" name="message" placeholder="Tell us about your pest problem..."></textarea>
           </div>
           <div class="form-submit">
-            <button type="submit" class="btn btn-primary btn-lg">Submit Quote Request</button>
+            <button type="submit" class="btn btn-primary btn-lg">Get My Free Quote</button>
           </div>
+          <p class="form-note">If pests come back between visits, we re-treat free.</p>
           <p class="form-note">We respect your privacy. Your information will never be shared.</p>
         </form>
       </div>
