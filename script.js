@@ -5,6 +5,30 @@
 
 const FORMSPREE_URL = 'https://formspree.io/f/xojnwkar';
 
+// =====================================================
+// ANALYTICS (GA4)
+// Paste the measurement ID (G-XXXXXXXXXX) once the GA4
+// property exists. Empty string = analytics fully off.
+// =====================================================
+const GA4_ID = '';
+
+function track(eventName, params) {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', eventName, params || {});
+  }
+}
+
+if (GA4_ID) {
+  const gtagScript = document.createElement('script');
+  gtagScript.async = true;
+  gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+  document.head.appendChild(gtagScript);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function() { dataLayer.push(arguments); };
+  gtag('js', new Date());
+  gtag('config', GA4_ID);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   // =====================================================
   // MOBILE MENU TOGGLE
@@ -246,6 +270,11 @@ document.addEventListener('DOMContentLoaded', function() {
           throw new Error(errorData.error || 'Form submission failed');
         }
 
+        track('generate_lead', {
+          form_subject: data._subject || '',
+          page_path: window.location.pathname
+        });
+
         // Show success message
         form.innerHTML =
           '<div class="form-success-message">' +
@@ -271,6 +300,15 @@ document.addEventListener('DOMContentLoaded', function() {
           submitBtn.style.opacity = '1';
         }
       }
+    });
+  });
+
+  // =====================================================
+  // PHONE CLICK TRACKING
+  // =====================================================
+  document.querySelectorAll('a[href^="tel:"]').forEach(function(link) {
+    link.addEventListener('click', function() {
+      track('phone_call_click', { page_path: window.location.pathname });
     });
   });
 
