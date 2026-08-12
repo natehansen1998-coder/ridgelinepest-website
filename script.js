@@ -10,7 +10,7 @@ const FORMSPREE_URL = 'https://formspree.io/f/xojnwkar';
 // Paste the measurement ID (G-XXXXXXXXXX) once the GA4
 // property exists. Empty string = analytics fully off.
 // =====================================================
-const GA4_ID = '';
+const GA4_ID = 'G-N5N142MWMK';
 
 function track(eventName, params) {
   if (typeof window.gtag === 'function') {
